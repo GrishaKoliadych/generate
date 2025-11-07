@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Комбінації цифр</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 30px 15px;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  input {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 10px;
+    text-align: center;
+    outline: none;
+    margin-bottom: 12px;
+  }
+  button {
+    width: 100%;
+    background: #00bcd4;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  button:hover {
+    background: #00acc1;
+  }
+  pre {
+    margin-top: 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 12px;
+    white-space: pre-wrap;
+    font-size: 1rem;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  .count {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔢 Генератор комбинаций цифр</h1>
+
+<div class="card">
+  <input id="digits" maxlength="8" placeholder="Введите цифры (например 1141)">
+  <button onclick="generate()">Сгенерировать</button>
+  <pre id="result"></pre>
+  <div class="count" id="count"></div>
+</div>
+
+<script>
+function generate() {
+  const input = document.getElementById('digits').value.trim();
+  const result = document.getElementById('result');
+  const count = document.getElementById('count');
+  result.textContent = '';
+  count.textContent = '';
+
+  if (!/^\d+$/.test(input)) {
+    result.textContent = 'Введите только цифры.';
+    return;
+  }
+
+  const seen = new Set();
+  const arr = [];
+
+  function permute(chars, prefix = '') {
+    if (chars.length === 0) {
+      if (!seen.has(prefix)) {
+        seen.add(prefix);
+        arr.push(prefix);
+      }
+      return;
+    }
+    for (let i = 0; i < chars.length; i++) {
+      permute(chars.slice(0, i) + chars.slice(i + 1), prefix + chars[i]);
+    }
+  }
+
+  permute(input);
+  result.textContent = arr.join('\n\n');
+  count.textContent = `Всего комбинаций: ${arr.length}`;
+}
+</script>
+
+</body>
+</html>
