@@ -117,10 +117,12 @@ function generate() {
   }
 
   permute(input);
-  result.textContent = arr.join('\n\n');
+  const formatted = arr.map((code, i) => `${i + 1}. ${code}`).join('\n\n');
+  result.textContent = formatted;
   count.textContent = `Всего комбинаций: ${arr.length}`;
 }
 </script>
 
 </body>
 </html>
+
